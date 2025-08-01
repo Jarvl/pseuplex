@@ -1,0 +1,35 @@
+services:
+  pseuplex:
+    image: ghcr.io/jarvl/pseuplex:latest
+    restart: unless-stopped
+    ports:
+      - "32397:32397"
+    volumes:
+      # Mount your config.json file here.
+      # You should create a 'config' directory in the same directory as this docker-compose.yml
+      # and place your config.json inside it.
+      - ./config:/config:ro
+
+      # Mount your plex app data directory here if you want to use autoP12Path.
+      # This path should match the plex service's config volume.
+      # This allows pseuplex to find the SSL certificates from your Plex installation.
+      # - /var/lib/plexmediaserver:/plex-config:ro
+
+      # If you are not using autoP12Path, you can mount your ssl certs here
+      # and update the path in your config.json.
+      # - ./ssl:/ssl:ro
+
+  # plex:
+  #   container_name: plex
+  #   image: plexinc/pms-docker
+  #   restart: unless-stopped
+  #   ports:
+  #     - 32400:32400
+  #   environment:
+  #     - TZ=America/New_York
+  #     - ADVERTISE_IP=https://mydomain.com:32397,http://mydomain.com:32397,http://192.168.1.148:32397/
+  #   hostname: mydomain.com
+  #   volumes:
+  #     - /var/lib/plexmediaserver:/config
+  #     - /var/lib/plexmediaserver/Library/Application Support/Plex Media Server/Cache:/transcode
+  #     - /srv/media:/data:ro
